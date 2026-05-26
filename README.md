@@ -1,4 +1,4 @@
-# SecureBook — Secure Resource Booking System
+# SecureBook - Secure Resource Booking System
 
 ![Python](https://img.shields.io/badge/Python-3.14-blue)
 ![Django](https://img.shields.io/badge/Django-5.1.4-green)
