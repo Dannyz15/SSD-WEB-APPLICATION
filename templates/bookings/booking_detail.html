@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Detail — SecureBook{% endblock %}
+{% block page_title %}Booking Detail{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:640px;">
+  <div class="card-header">
+    <h2 class="card-title">{{ booking.title }}</h2>
+    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+  </div>
+
+  <table style="width:100%;font-size:.9rem;">
+    <tr><td class="text-muted" style="padding:.5rem;width:35%;">Resource</td><td><strong>{{ booking.resource.name }}</strong> ({{ booking.resource.get_resource_type_display }})</td></tr>
+    {% if user.is_admin_user %}
+    <tr><td class="text-muted" style="padding:.5rem;">Requested By</td><td>{{ booking.user.get_full_name|default:booking.user.username }}</td></tr>
+    {% endif %}
+    <tr><td class="text-muted" style="padding:.5rem;">Purpose</td><td>{{ booking.purpose }}</td></tr>
+    <tr><td class="text-muted" style="padding:.5rem;">Start</td><td>{{ booking.start_datetime|date:"d M Y, H:i" }}</td></tr>
+    <tr><td class="text-muted" style="padding:.5rem;">End</td><td>{{ booking.end_datetime|date:"d M Y, H:i" }}</td></tr>
+    <tr><td class="text-muted" style="padding:.5rem;">Duration</td><td>{{ booking.duration_hours }} hours</td></tr>
+    <tr><td class="text-muted" style="padding:.5rem;">Attendees</td><td>{{ booking.attendees }}</td></tr>
+    <tr><td class="text-muted" style="padding:.5rem;">Submitted</td><td>{{ booking.created_at|date:"d M Y, H:i" }}</td></tr>
+    {% if booking.admin_note %}
+    <tr><td class="text-muted" style="padding:.5rem;">Admin Note</td><td>{{ booking.admin_note }}</td></tr>
+    {% endif %}
+  </table>
+
+  <div class="d-flex gap-1 mt-3" style="border-top:1px solid #e5e7eb;padding-top:1rem;">
+    <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline">← Back</a>
+    {% if user.is_admin_user and booking.status == 'pending' %}
+    <a href="{% url 'bookings:booking_review' booking.pk %}" class="btn btn-warning">Review</a>
+    {% endif %}
+    {% if not user.is_admin_user and booking.status == 'pending' %}
+    <a href="{% url 'bookings:booking_update' booking.pk %}" class="btn btn-outline">Edit</a>
+    <form method="post" action="{% url 'bookings:booking_cancel' booking.pk %}"
+          onsubmit="return confirm('Cancel this booking?')">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Cancel Booking</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Review Booking — SecureBook{% endblock %}
+{% block page_title %}Review Booking{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:600px;">
+  <div class="card-header">
+    <h2 class="card-title">📝 Review: {{ booking.title }}</h2>
+    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+  </div>
+
+  <div style="background:#f9fafb;border-radius:.5rem;padding:1rem;margin-bottom:1.25rem;font-size:.875rem;">
+    <strong>Resource:</strong> {{ booking.resource.name }}<br>
+    <strong>Requested by:</strong> {{ booking.user.get_full_name|default:booking.user.username }}<br>
+    <strong>Purpose:</strong> {{ booking.purpose }}<br>
+    <strong>When:</strong> {{ booking.start_datetime|date:"d M Y H:i" }} → {{ booking.end_datetime|date:"d M Y H:i" }}<br>
+    <strong>Attendees:</strong> {{ booking.attendees }}
+  </div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="form-label">Decision</label>
+      {{ form.status }}
+      {% if form.status.errors %}<div class="form-error">{{ form.status.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Admin Note (optional)</label>
+      {{ form.admin_note }}
+      {% if form.admin_note.errors %}<div class="form-error">{{ form.admin_note.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="d-flex gap-1 mt-2">
+      <button type="submit" class="btn btn-primary">Save Decision</button>
+      <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

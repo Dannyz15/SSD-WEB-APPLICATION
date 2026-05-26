@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Account Locked — SecureBook{% endblock %}
+
+{% block auth_content %}
+<div class="auth-wrapper">
+  <div class="auth-card" style="text-align:center;">
+    <div style="font-size:3rem;">🔐</div>
+    <h2 style="color:#991b1b;margin:.5rem 0;">Account Temporarily Locked</h2>
+    <p class="text-muted">Too many failed login attempts. Please wait 30 minutes before trying again.</p>
+    <p class="text-muted" style="font-size:.8rem;">If you believe this is an error, contact your administrator.</p>
+    <a href="{% url 'accounts:login' %}" class="btn btn-outline mt-2">Back to Login</a>
+  </div>
+</div>
+{% endblock %}

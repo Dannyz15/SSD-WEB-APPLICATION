@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Audit Logs — SecureBook{% endblock %}
+{% block page_title %}Audit Logs{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">📋 Security Audit Log</h2>
+    <form method="get" class="d-flex gap-1 align-center">
+      <select name="action" class="form-select" style="width:auto;">
+        <option value="">All Actions</option>
+        {% for value, label in action_choices %}
+        <option value="{{ value }}" {% if selected_action == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-outline btn-sm">Filter</button>
+      {% if selected_action %}<a href="{% url 'accounts:audit_log' %}" class="btn btn-outline btn-sm">Clear</a>{% endif %}
+    </form>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>User</th>
+          <th>Action</th>
+          <th>Resource</th>
+          <th>IP Address</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td style="white-space:nowrap;font-size:.8rem;">{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
+          <td>
+            {% if log.user %}
+              {{ log.user.username }}
+            {% elif log.username_attempted %}
+              <span class="text-muted">{{ log.username_attempted }}</span>
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="status-badge {% if log.success %}status-approved{% else %}status-rejected{% endif %}">
+              {{ log.get_action_display }}
+            </span>
+          </td>
+          <td>{{ log.resource|default:"—" }}</td>
+          <td style="font-size:.8rem;">{{ log.ip_address|default:"—" }}</td>
+          <td>
+            {% if log.success %}
+              <span style="color:#065f46;">✓ Success</span>
+            {% else %}
+              <span style="color:#991b1b;">✗ Failed</span>
+            {% endif %}
+          </td>
+          <td style="font-size:.8rem;color:#6b7280;">{{ log.extra|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center text-muted" style="padding:2rem;">No audit log entries found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

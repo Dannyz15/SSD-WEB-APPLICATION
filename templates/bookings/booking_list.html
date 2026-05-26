@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Bookings — SecureBook{% endblock %}
+{% block page_title %}{% if user.is_admin_user %}All Bookings{% else %}My Bookings{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">📅 Bookings</h2>
+    <div class="d-flex gap-1 align-center">
+      <form method="get" class="d-flex gap-1 align-center">
+        <select name="status" class="form-select" style="width:auto;">
+          <option value="">All Status</option>
+          {% for value, label in status_choices %}
+          <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-outline btn-sm">Filter</button>
+        {% if selected_status %}<a href="{% url 'bookings:booking_list' %}" class="btn btn-outline btn-sm">Clear</a>{% endif %}
+      </form>
+      <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary btn-sm">➕ New</a>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          {% if user.is_admin_user %}<th>Submitted By</th>{% endif %}
+          <th>Resource</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Attendees</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td><a href="{% url 'bookings:booking_detail' b.pk %}">{{ b.title }}</a></td>
+          {% if user.is_admin_user %}<td>{{ b.user.username }}</td>{% endif %}
+          <td>{{ b.resource.name }}</td>
+          <td style="font-size:.8rem;white-space:nowrap;">{{ b.start_datetime|date:"d/m/Y H:i" }}</td>
+          <td style="font-size:.8rem;white-space:nowrap;">{{ b.end_datetime|date:"d/m/Y H:i" }}</td>
+          <td>{{ b.attendees }}</td>
+          <td><span class="status-badge status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+          <td class="d-flex gap-1">
+            <a href="{% url 'bookings:booking_detail' b.pk %}" class="btn btn-outline btn-sm">View</a>
+            {% if user.is_admin_user and b.status == 'pending' %}
+            <a href="{% url 'bookings:booking_review' b.pk %}" class="btn btn-warning btn-sm">Review</a>
+            {% endif %}
+            {% if not user.is_admin_user and b.status == 'pending' %}
+            <a href="{% url 'bookings:booking_update' b.pk %}" class="btn btn-outline btn-sm">Edit</a>
+            {% endif %}
+            {% if not user.is_admin_user and b.status in 'pending,approved' %}
+            <form method="post" action="{% url 'bookings:booking_cancel' b.pk %}"
+                  onsubmit="return confirm('Cancel this booking?')">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9" class="text-center text-muted" style="padding:2rem;">No bookings found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

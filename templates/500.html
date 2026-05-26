@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>500 Server Error — SecureBook</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="error-page">
+  <div>
+    <div class="error-code">500</div>
+    <div class="error-msg">Internal Server Error</div>
+    <p class="text-muted">Something went wrong on our end. Please try again later.</p>
+    <a href="/" class="btn btn-primary">Go Home</a>
+  </div>
+</div>
+</body>
+</html>

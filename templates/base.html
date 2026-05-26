@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';">
+  <title>{% block title %}SecureBook{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<nav class="sidebar">
+  <a class="sidebar-brand" href="{% url 'bookings:dashboard' %}">
+    🔒 <span>Secure</span>Book
+  </a>
+
+  <div class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="{% url 'bookings:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
+      📊 Dashboard
+    </a>
+    <a href="{% url 'bookings:booking_list' %}" {% if 'booking' in request.resolver_match.url_name %}class="active"{% endif %}>
+      📅 My Bookings
+    </a>
+    <a href="{% url 'bookings:booking_create' %}">
+      ➕ New Booking
+    </a>
+    <a href="{% url 'bookings:resource_list' %}">
+      🏢 Resources
+    </a>
+
+    {% if user.is_admin_user %}
+    <div class="nav-section mt-2">Admin</div>
+    <a href="{% url 'bookings:resource_create' %}">
+      ➕ Add Resource
+    </a>
+    <a href="{% url 'accounts:audit_log' %}" {% if request.resolver_match.url_name == 'audit_log' %}class="active"{% endif %}>
+      📋 Audit Logs
+    </a>
+    {% endif %}
+
+    <div class="nav-section mt-2">Account</div>
+    <a href="{% url 'accounts:profile' %}" {% if 'profile' in request.resolver_match.url_name %}class="active"{% endif %}>
+      👤 Profile
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    Logged in as <strong>{{ user.username }}</strong>
+  </div>
+</nav>
+
+<div class="main-wrapper">
+  <header class="topbar">
+    <span class="topbar-title">{% block page_title %}{% endblock %}</span>
+    <div class="topbar-user">
+      <span>{{ user.get_full_name|default:user.username }}</span>
+      <span class="badge-role {% if user.is_admin_user %}badge-admin{% else %}badge-user{% endif %}">
+        {{ user.get_role_display }}
+      </span>
+      <form method="post" action="{% url 'accounts:logout' %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="page-content">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+{% else %}
+{% block auth_content %}{% endblock %}
+{% endif %}
+
+</body>
+</html>
