@@ -7,9 +7,6 @@
 
 A secure web application for booking shared resources (rooms, labs, equipment), built with **Django 5.1.4** and designed to satisfy **OWASP Top 10** and **OWASP ASVS** requirements.
 
-> **Course:** IKB 21503 — Secure Software Development  
-> **Institution:** UniKL MIIT  
-
 ---
 
 ## Table of Contents
@@ -31,7 +28,7 @@ A secure web application for booking shared resources (rooms, labs, equipment), 
 - **Admin users** manage resources (create, edit, delete rooms/labs/equipment) and approve or reject booking requests.
 - **Normal users** register, log in, browse available resources, submit booking requests, and manage their own bookings.
 
-Every layer of the application is built with security in mind — from the password hashing algorithm down to the HTTP response headers.
+Every layer of the application is built with security in mind - from the password hashing algorithm down to the HTTP response headers.
 
 ### Key Modules
 
@@ -110,7 +107,7 @@ SSD-WEB-APPLICATION/
 |---|---|
 | Password hashing | Argon2id via `argon2-cffi` (memory-hard, OWASP recommended) |
 | Password strength | Min 8 chars, uppercase, lowercase, digit, special character |
-| Brute-force protection | `django-axes` — 5 failed attempts triggers 30-minute lockout |
+| Brute-force protection | `django-axes` - 5 failed attempts triggers 30-minute lockout |
 | Lockout logging | Every lockout event written to AuditLog with IP + user-agent |
 
 ### 3.2 Session Management (OWASP ASVS V3)
@@ -118,7 +115,7 @@ SSD-WEB-APPLICATION/
 | Control | Implementation |
 |---|---|
 | Session timeout | 30 minutes (`SESSION_COOKIE_AGE = 1800`) |
-| Session renewal | `SESSION_SAVE_EVERY_REQUEST = True` — resets on every request |
+| Session renewal | `SESSION_SAVE_EVERY_REQUEST = True` - resets on every request |
 | Cookie flags | `HttpOnly=True`, `SameSite=Lax` |
 | Cache control | `@never_cache` on all authenticated views |
 | CSRF protection | Django CSRF middleware; logout is POST-only with `{% csrf_token %}` |
@@ -128,7 +125,7 @@ SSD-WEB-APPLICATION/
 | Control | Implementation |
 |---|---|
 | Role-based access | `User.role` field (`admin` / `user`); `is_admin_user()` method |
-| Admin decorator | `@admin_required` in `bookings/decorators.py` — renders 403 + logs |
+| Admin decorator | `@admin_required` in `bookings/decorators.py` - renders 403 + logs |
 | IDOR prevention | Non-admin booking queries always filtered by `user=request.user` |
 | UUID primary keys | All `Resource` and `Booking` records use UUID PKs (no sequential IDs) |
 
@@ -136,8 +133,8 @@ SSD-WEB-APPLICATION/
 
 - All form fields validated with **regex whitelist** patterns before saving
 - `DateTimeField` inputs validated: start must be in the future, end > start, max 24 h duration
-- Capacity: integer 1–10 000; attendees cannot exceed resource capacity
-- `next` redirect parameter validated — must begin with `/` to prevent open redirect
+- Capacity: integer 1 - 10 000; attendees cannot exceed resource capacity
+- `next` redirect parameter validated - must begin with `/` to prevent open redirect
 
 ### 3.5 Logging & Audit (OWASP ASVS V7)
 
@@ -159,7 +156,7 @@ Structured log file at `logs/security.log` (Django `LOGGING` config).
 
 ### 3.6 Injection Prevention
 
-- **Zero raw SQL** — Django ORM used exclusively throughout
+- **Zero raw SQL** - Django ORM used exclusively throughout
 - All user inputs pass regex whitelist validators before the ORM layer
 
 ### 3.7 Security Headers
@@ -174,7 +171,7 @@ X-Frame-Options: DENY
 
 ### 3.8 Error Handling
 
-Custom error pages for `400`, `403`, `404`, `500` — **no stack traces** or debug info exposed to users.
+Custom error pages for `400`, `403`, `404`, `500` - **no stack traces** or debug info exposed to users.
 
 ### 3.9 Secrets Management
 
@@ -190,14 +187,14 @@ All secrets (`SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, database URL) stored in `.e
 - `pip`
 - Git
 
-### Step 1 — Clone the repository
+### Step 1 - Clone the repository
 
 ```bash
 git clone https://github.com/Dannyz15/SSD-WEB-APPLICATION.git
 cd SSD-WEB-APPLICATION
 ```
 
-### Step 2 — Create and activate a virtual environment
+### Step 2 - Create and activate a virtual environment
 
 ```bash
 # Windows
@@ -209,13 +206,13 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-### Step 3 — Install dependencies
+### Step 3 - Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4 — Configure environment variables
+### Step 4 - Configure environment variables
 
 ```bash
 cp .env.example .env
@@ -229,13 +226,13 @@ DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
 ```
 
-### Step 5 — Apply database migrations
+### Step 5 - Apply database migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### Step 6 — (Optional) Seed demo data
+### Step 6 - (Optional) Seed demo data
 
 ```bash
 python seed.py
