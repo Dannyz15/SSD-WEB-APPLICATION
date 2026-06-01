@@ -342,7 +342,3 @@ pip install -r requirements.txt
 
 - **Repository:** https://github.com/Dannyz15/SSD-WEB-APPLICATION
 - **Version:** v1.0.0
-
----
-
-
