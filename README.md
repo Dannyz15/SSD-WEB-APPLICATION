@@ -345,6 +345,4 @@ pip install -r requirements.txt
 
 ---
 
-## License
 
-This project was developed for academic purposes under the IKB 21503 Secure Software Development course at UniKL MIIT.
