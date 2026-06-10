@@ -358,6 +358,9 @@ pip install -r requirements.txt
 ### Lockout Page
 ![Lockout Page](docs/screenshots/lockout.png)
 
+### My Profile
+![My Profile](docs/screenshots/profile.png)
+
 ### Profile Picture Upload
 ![Profile Picture Upload](docs/screenshots/profile_upload.png)
 
