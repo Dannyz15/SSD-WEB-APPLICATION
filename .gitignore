@@ -15,8 +15,10 @@ build/
 # Django
 db.sqlite3
 /staticfiles/
-/logs/
-*.log
+
+# Logs — keep folder but ignore log files
+logs/*.log
+!logs/.gitkeep
 
 # User uploads — ignore actual files but keep folder structure
 uploads/**
