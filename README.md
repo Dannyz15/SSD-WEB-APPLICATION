@@ -225,17 +225,25 @@ pip install -r requirements.txt
 
 ### Step 4 - Configure environment variables
 
+Copy the example file to create your local `.env`:
+
 ```bash
+# macOS / Linux
 cp .env.example .env
+
+# Windows (Command Prompt or PowerShell)
+copy .env.example .env
 ```
 
-Open `.env` and set at minimum:
+The `.env.example` already contains development-ready defaults. The **only value you must change** is `SECRET_KEY`:
 
 ```
-SECRET_KEY=your-random-secret-key-here
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
+SECRET_KEY=your-very-long-random-secret-key-here
 ```
+
+Generate a strong key at **https://djecrety.ir/** and paste it into `.env`.
+
+> For production deployment, uncomment and update the production values at the bottom of `.env` (see the comments inside the file).
 
 ### Step 5 - Apply database migrations
 
