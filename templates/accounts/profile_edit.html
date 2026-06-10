@@ -9,7 +9,7 @@
     <h2 class="card-title">Update Profile</h2>
   </div>
 
-  <form method="post" novalidate>
+  <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
@@ -42,6 +42,20 @@
         {{ form.department }}
         {% if form.department.errors %}<div class="form-error">{{ form.department.errors.0 }}</div>{% endif %}
       </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Profile Picture</label>
+      {% if user.profile_picture %}
+        <div style="margin-bottom:.5rem;">
+          <img src="{{ user.profile_picture.url }}" alt="Current profile picture"
+               style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid #e5e7eb;">
+          <small class="text-muted" style="display:block;margin-top:.25rem;">Current picture</small>
+        </div>
+      {% endif %}
+      {{ form.profile_picture }}
+      {% if form.profile_picture.errors %}<div class="form-error">{{ form.profile_picture.errors.0 }}</div>{% endif %}
+      <small class="text-muted">JPG, PNG or GIF only. Max 2 MB.</small>
     </div>
 
     <div class="d-flex gap-1 mt-2">

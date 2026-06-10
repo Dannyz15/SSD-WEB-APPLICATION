@@ -94,7 +94,7 @@ def profile_view(request):
 @require_http_methods(['GET', 'POST'])
 def profile_update_view(request):
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=request.user)
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             log_audit(request, AuditLog.ACTION_PROFILE_UPDATE, resource='profile')

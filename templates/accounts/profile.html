@@ -10,6 +10,13 @@
     <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary btn-sm">Edit Profile</a>
   </div>
 
+  {% if user.profile_picture %}
+  <div style="padding:1rem 1rem 0;">
+    <img src="{{ user.profile_picture.url }}" alt="Profile picture"
+         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:3px solid #e5e7eb;">
+  </div>
+  {% endif %}
+
   <table style="width:100%;font-size:.9rem;">
     <tr><td class="text-muted" style="padding:.5rem;width:35%;">Username</td><td><strong>{{ user.username }}</strong></td></tr>
     <tr><td class="text-muted" style="padding:.5rem;">Full Name</td><td>{{ user.get_full_name|default:"—" }}</td></tr>

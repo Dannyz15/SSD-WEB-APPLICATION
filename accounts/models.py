@@ -1,7 +1,13 @@
+import os
 import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+
+
+def profile_picture_path(instance, filename):
+    ext = os.path.splitext(filename)[1].lower()
+    return f'profile_pictures/{uuid.uuid4().hex}{ext}'
 
 
 class User(AbstractUser):
@@ -15,6 +21,11 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=ROLE_USER)
     phone = models.CharField(max_length=20, blank=True)
     department = models.CharField(max_length=100, blank=True)
+    profile_picture = models.ImageField(
+        upload_to=profile_picture_path,
+        null=True,
+        blank=True,
+    )
 
     def is_admin_user(self):
         return self.role == self.ROLE_ADMIN

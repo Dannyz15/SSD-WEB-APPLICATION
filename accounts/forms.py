@@ -1,8 +1,14 @@
+import io
+import os
 import re
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.core.validators import RegexValidator
+from PIL import Image
 from .models import User
+
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'gif'}
+MAX_PROFILE_PIC_SIZE = 2 * 1024 * 1024  # 2 MB
 
 phone_validator = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
@@ -118,13 +124,14 @@ class SecureLoginForm(AuthenticationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone', 'department']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'department', 'profile_picture']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
         }
 
     def clean_email(self):
@@ -151,6 +158,30 @@ class ProfileUpdateForm(forms.ModelForm):
         if name and not re.match(r'^[A-Za-z\s\-\']+$', name):
             raise forms.ValidationError('Last name may only contain letters, spaces, hyphens, and apostrophes.')
         return name
+
+    def clean_profile_picture(self):
+        file = self.cleaned_data.get('profile_picture')
+        if not file or not hasattr(file, 'name'):
+            return file
+
+        # Validate file size (max 2 MB)
+        if file.size > MAX_PROFILE_PIC_SIZE:
+            raise forms.ValidationError('Profile picture must be under 2 MB.')
+
+        # Validate file extension (whitelist)
+        ext = os.path.splitext(file.name)[1].lstrip('.').lower()
+        if ext not in ALLOWED_IMAGE_EXTENSIONS:
+            raise forms.ValidationError('Only JPG, PNG, and GIF images are allowed.')
+
+        # Validate actual image content via Pillow (checks magic bytes, not just extension)
+        try:
+            img = Image.open(io.BytesIO(file.read()))
+            img.verify()
+        except Exception:
+            raise forms.ValidationError('Uploaded file is not a valid image.')
+
+        file.seek(0)
+        return file
 
 
 class SecurePasswordChangeForm(PasswordChangeForm):
