@@ -84,10 +84,10 @@ SSD-WEB-APPLICATION/
 │   ├── accounts/              # login, register, lockout, profile, audit_log
 │   └── bookings/              # dashboard, resource_list/form, booking_list/form/detail/review
 │
-├── logs/                      # Runtime security logs (git-ignored)
+├── logs/                      # Runtime security logs (log files git-ignored, folder tracked)
 │   └── security.log
 │
-├── uploads/                   # User file uploads (git-ignored)
+├── uploads/                   # User file uploads (contents git-ignored, folder tracked)
 │   └── profile_pictures/      # Profile images — renamed to UUID on upload
 │
 ├── .env.example               # Template for required environment variables
@@ -143,14 +143,16 @@ The `AuditLog` model records:
 
 | Event | Trigger |
 |---|---|
-| `LOGIN_SUCCESS` / `LOGIN_FAIL` | Every login attempt |
-| `LOGOUT` | Every logout |
-| `ACCOUNT_LOCKED` | django-axes lockout callback |
+| `LOGIN` | Successful login |
+| `LOGIN_FAILED` | Failed login attempt |
+| `LOGOUT` | User logout |
 | `REGISTER` | New user registration |
-| `BOOKING_CREATE` / `UPDATE` / `CANCEL` | Booking mutations by user |
-| `BOOKING_APPROVE` / `REJECT` | Admin review actions |
-| `RESOURCE_CREATE` / `UPDATE` / `DELETE` | Admin resource mutations |
-| `ACCESS_DENIED` | Forbidden access attempts |
+| `PROFILE_UPDATE` | User updates profile info or picture |
+| `PASSWORD_CHANGE` | User changes password |
+| `CREATE` | Booking or resource created |
+| `UPDATE` | Booking updated, cancelled, approved, or rejected |
+| `DELETE` | Resource deleted by admin |
+| `ACCESS_DENIED` | Forbidden access attempt (logged with IP) |
 
 Logs store: timestamp, user, attempted username, IP address, user-agent, resource, outcome.  
 Structured log file at `logs/security.log` (Django `LOGGING` config).
@@ -355,6 +357,9 @@ pip install -r requirements.txt
 
 ### Lockout Page
 ![Lockout Page](docs/screenshots/lockout.png)
+
+### Profile Picture Upload
+![Profile Picture Upload](docs/screenshots/profile_upload.png)
 
 ---
 
