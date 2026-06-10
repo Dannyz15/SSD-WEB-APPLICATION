@@ -84,6 +84,9 @@ SSD-WEB-APPLICATION/
 │   ├── accounts/              # login, register, lockout, profile, audit_log
 │   └── bookings/              # dashboard, resource_list/form, booking_list/form/detail/review
 │
+├── docs/
+│   └── screenshots/           # Application screenshots for README
+│
 ├── logs/                      # Runtime security logs (log files git-ignored, folder tracked)
 │   └── security.log
 │
