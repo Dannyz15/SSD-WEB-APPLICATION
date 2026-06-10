@@ -128,7 +128,7 @@ SSD-WEB-APPLICATION/
 
 | Control | Implementation |
 |---|---|
-| Role-based access | `User.role` field (`admin` / `user`); `is_admin_user()` method |
+| Role-based access | `User.role` field (`admin` / `user`); `is_admin_user` property (also grants access to `is_superuser` accounts) |
 | Admin decorator | `@admin_required` in `bookings/decorators.py` - renders 403 + logs |
 | IDOR prevention | Non-admin booking queries always filtered by `user=request.user` |
 | UUID primary keys | All `Resource` and `Booking` records use UUID PKs (no sequential IDs) |
