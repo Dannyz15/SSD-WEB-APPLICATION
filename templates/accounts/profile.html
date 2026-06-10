@@ -24,7 +24,7 @@
     <tr><td class="text-muted" style="padding:.5rem;">Phone</td><td>{{ user.phone|default:"—" }}</td></tr>
     <tr><td class="text-muted" style="padding:.5rem;">Department</td><td>{{ user.department|default:"—" }}</td></tr>
     <tr><td class="text-muted" style="padding:.5rem;">Role</td>
-      <td><span class="badge-role {% if user.is_admin_user %}badge-admin{% else %}badge-user{% endif %}">{{ user.get_role_display }}</span></td>
+      <td><span class="badge-role {% if user.is_admin_user %}badge-admin{% else %}badge-user{% endif %}">{% if user.is_admin_user %}Admin{% else %}User{% endif %}</span></td>
     </tr>
     <tr><td class="text-muted" style="padding:.5rem;">Member Since</td><td>{{ user.date_joined|date:"d M Y" }}</td></tr>
     <tr><td class="text-muted" style="padding:.5rem;">Last Login</td><td>{{ user.last_login|date:"d M Y, H:i"|default:"Never" }}</td></tr>
