@@ -15,9 +15,14 @@ build/
 # Django
 db.sqlite3
 /staticfiles/
-/uploads/
 /logs/
 *.log
+
+# User uploads — ignore actual files but keep folder structure
+uploads/**
+!uploads/.gitkeep
+!uploads/profile_pictures/
+!uploads/profile_pictures/.gitkeep
 
 # Virtual environments
 venv/
