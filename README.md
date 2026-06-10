@@ -1,11 +1,11 @@
 # SecureBook - Secure Resource Booking System
 
 ![Python](https://img.shields.io/badge/Python-3.14-blue)
-![Django](https://img.shields.io/badge/Django-5.1.4-green)
+![Django](https://img.shields.io/badge/Django-5.2.15-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![OWASP](https://img.shields.io/badge/OWASP-Compliant-red)
 
-A secure web application for booking shared resources (rooms, labs, equipment), built with **Django 5.1.4** and designed to satisfy **OWASP Top 10** and **OWASP ASVS** requirements.
+A secure web application for booking shared resources (rooms, labs, equipment), built with **Django 5.2.15** and designed to satisfy **OWASP Top 10** and **OWASP ASVS** requirements.
 
 ---
 
@@ -288,7 +288,7 @@ SECURE_SSL_REDIRECT=True
 
 | Package | Version | Purpose |
 |---|---|---|
-| Django | 5.1.4 | Web framework |
+| Django | 5.2.15 | Web framework |
 | argon2-cffi | 23.1.0 | Argon2id password hashing |
 | argon2-cffi-bindings | 25.1.0 | C bindings for argon2-cffi |
 | django-axes | 7.0.0 | Brute-force login protection |
