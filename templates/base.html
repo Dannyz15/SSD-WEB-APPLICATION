@@ -61,7 +61,7 @@
     <div class="topbar-user">
       <span>{{ user.get_full_name|default:user.username }}</span>
       <span class="badge-role {% if user.is_admin_user %}badge-admin{% else %}badge-user{% endif %}">
-        {{ user.get_role_display }}
+        {% if user.is_admin_user %}Admin{% else %}User{% endif %}
       </span>
       <form method="post" action="{% url 'accounts:logout' %}" style="margin:0">
         {% csrf_token %}
