@@ -27,8 +27,9 @@ class User(AbstractUser):
         blank=True,
     )
 
+    @property
     def is_admin_user(self):
-        return self.role == self.ROLE_ADMIN
+        return self.role == self.ROLE_ADMIN or self.is_superuser
 
     def __str__(self):
         return f'{self.username} ({self.get_role_display()})'
