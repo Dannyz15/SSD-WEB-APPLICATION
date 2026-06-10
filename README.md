@@ -88,6 +88,7 @@ SSD-WEB-APPLICATION/
 │   └── security.log
 │
 ├── uploads/                   # User file uploads (git-ignored)
+│   └── profile_pictures/      # Profile images — renamed to UUID on upload
 │
 ├── .env.example               # Template for required environment variables
 ├── .gitignore
@@ -154,12 +155,22 @@ The `AuditLog` model records:
 Logs store: timestamp, user, attempted username, IP address, user-agent, resource, outcome.  
 Structured log file at `logs/security.log` (Django `LOGGING` config).
 
-### 3.6 Injection Prevention
+### 3.6 File Upload Security (OWASP ASVS V12)
+
+| Control | Implementation |
+|---|---|
+| Extension whitelist | Only `.jpg`, `.jpeg`, `.png`, `.gif` accepted |
+| MIME / magic-byte check | Pillow `Image.verify()` confirms actual image content, not just extension |
+| Size limit | Max 2 MB enforced at form level; 5 MB hard cap in `settings.py` |
+| Storage outside web root | Saved to `uploads/profile_pictures/` — separate from `static/` web-served directory |
+| UUID rename | `profile_picture_path()` renames every file to `<uuid4_hex>.<ext>` on upload |
+
+### 3.7 Injection Prevention
 
 - **Zero raw SQL** - Django ORM used exclusively throughout
 - All user inputs pass regex whitelist validators before the ORM layer
 
-### 3.7 Security Headers
+### 3.8 Security Headers
 
 Set via Django middleware and `base.html` meta tags:
 
@@ -169,11 +180,11 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 ```
 
-### 3.8 Error Handling
+### 3.9 Error Handling
 
 Custom error pages for `400`, `403`, `404`, `500` - **no stack traces** or debug info exposed to users.
 
-### 3.9 Secrets Management
+### 3.10 Secrets Management
 
 All secrets (`SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, database URL) stored in `.env` via `python-decouple`. The `.env` file is git-ignored; `.env.example` documents all required keys.
 
@@ -292,6 +303,7 @@ SECURE_SSL_REDIRECT=True
 | argon2-cffi | 23.1.0 | Argon2id password hashing |
 | argon2-cffi-bindings | 25.1.0 | C bindings for argon2-cffi |
 | django-axes | 7.0.0 | Brute-force login protection |
+| Pillow | 12.2.0 | Image processing for file upload validation |
 | python-decouple | 3.8 | `.env` secrets management |
 | whitenoise | 6.8.2 | Static file serving |
 | sqlparse | 0.5.5 | Django SQL formatting (dev) |
