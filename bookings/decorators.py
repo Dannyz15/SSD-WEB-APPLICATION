@@ -12,7 +12,7 @@ def admin_required(view_func):
             from django.conf import settings
             from django.shortcuts import redirect
             return redirect(f'{settings.LOGIN_URL}?next={request.path}')
-        if not request.user.is_admin_user():
+        if not request.user.is_admin_user:
             log_audit(request, AuditLog.ACTION_ACCESS_DENIED, resource=request.path, success=False)
             return render(request, '403.html', status=403)
         return view_func(request, *args, **kwargs)

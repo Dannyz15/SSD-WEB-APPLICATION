@@ -20,7 +20,7 @@ logger = logging.getLogger('bookings')
 @never_cache
 def dashboard(request):
     user = request.user
-    if user.is_admin_user():
+    if user.is_admin_user:
         pending_count = Booking.objects.filter(status=Booking.STATUS_PENDING).count()
         total_bookings = Booking.objects.count()
         total_resources = Resource.objects.filter(is_active=True).count()
@@ -99,7 +99,7 @@ def resource_delete(request, pk):
 @never_cache
 def booking_list(request):
     user = request.user
-    if user.is_admin_user():
+    if user.is_admin_user:
         bookings = Booking.objects.select_related('user', 'resource').all()
     else:
         bookings = Booking.objects.filter(user=user).select_related('resource')
@@ -138,7 +138,7 @@ def booking_create(request):
 @never_cache
 def booking_detail(request, pk):
     user = request.user
-    if user.is_admin_user():
+    if user.is_admin_user:
         booking = get_object_or_404(Booking.objects.select_related('user', 'resource'), pk=pk)
     else:
         # Users can only view their own bookings (prevent IDOR)

@@ -127,7 +127,7 @@ def password_change_view(request):
 @login_required
 @never_cache
 def audit_log_view(request):
-    if not request.user.is_admin_user():
+    if not request.user.is_admin_user:
         log_audit(request, AuditLog.ACTION_ACCESS_DENIED, resource='audit_log', success=False)
         return render(request, '403.html', status=403)
 
