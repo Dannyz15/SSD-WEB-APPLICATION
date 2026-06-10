@@ -253,7 +253,15 @@ Generate a strong key at **https://djecrety.ir/** and paste it into `.env`.
 python manage.py migrate
 ```
 
-### Step 6 - (Optional) Seed demo data
+### Step 6 - Create a superuser (admin account)
+
+```bash
+python manage.py createsuperuser
+```
+
+Follow the prompts to set a username, email, and password. This account can log in to the app and access the Audit Log and Django admin panel at `/admin/`.
+
+### Step 7 - (Optional) Seed demo data
 
 ```bash
 python seed.py
@@ -267,6 +275,8 @@ This creates:
 | User  | `alice`  | `Alice@1234!` |
 
 And five sample resources: Board Room A, Conference Room B, Computer Lab 1, Training Hall, Projector Unit.
+
+> If you run `seed.py`, you can skip Step 6 — it already creates an admin account.
 
 ---
 
