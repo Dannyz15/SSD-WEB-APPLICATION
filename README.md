@@ -347,39 +347,88 @@ pip install -r requirements.txt
 
 > Screenshots below show the live application after running `python seed.py` and `python manage.py runserver`.
 
-### Login Page
+### 7.1 Authentication
+
+#### Login Page
 ![Login Page](docs/screenshots/login.png)
 
-### Admin Dashboard
-![Admin Dashboard](docs/screenshots/dashboard_admin.png)
+#### Registration Page
+![Registration Page](docs/screenshots/register.png)
 
-### User Dashboard
-![User Dashboard](docs/screenshots/dashboard_user.png)
-
-### Resource List (Admin)
-![Resource List](docs/screenshots/resource_list.png)
-
-### Create Booking
-![Create Booking](docs/screenshots/booking_form.png)
-
-### Booking Review (Admin)
-![Booking Review](docs/screenshots/booking_review.png)
-
-### Audit Log (Admin Only)
-![Audit Log](docs/screenshots/audit_log.png)
-
-### Lockout Page
+#### Account Lockout (After 5 Failed Attempts)
 ![Lockout Page](docs/screenshots/lockout.png)
 
-### My Profile
+---
+
+### 7.2 Dashboard
+
+#### Admin Dashboard
+![Admin Dashboard](docs/screenshots/dashboard_admin.png)
+
+#### User Dashboard
+![User Dashboard](docs/screenshots/dashboard_user.png)
+
+---
+
+### 7.3 Resource Management (Admin)
+
+#### Resource List
+![Resource List](docs/screenshots/resource_list.png)
+
+#### Create New Resource
+![Create New Resource](docs/screenshots/resource_create.png)
+
+#### Edit Resource
+![Edit Resource](docs/screenshots/resource_edit.png)
+
+---
+
+### 7.4 Booking Management
+
+#### Booking List (User View)
+![Booking List](docs/screenshots/booking_list.png)
+
+#### Create New Booking
+![Create Booking](docs/screenshots/booking_form.png)
+
+#### Booking Detail
+![Booking Detail](docs/screenshots/booking_detail.png)
+
+#### Booking Review (Admin Approve / Reject)
+![Booking Review](docs/screenshots/booking_review.png)
+
+---
+
+### 7.5 User Profile
+
+#### My Profile
 ![My Profile](docs/screenshots/profile.png)
 
-### Profile Picture Upload
+#### Profile Picture Upload
 ![Profile Picture Upload](docs/screenshots/profile_upload.png)
+
+---
+
+### 7.6 Audit Log (Admin Only)
+
+![Audit Log](docs/screenshots/audit_log.png)
+
+---
+
+### 7.7 Error Pages
+
+#### 403 Forbidden
+![403 Forbidden](docs/screenshots/error_403.png)
+
+#### 404 Not Found
+![404 Not Found](docs/screenshots/error_404.png)
+
+#### 500 Internal Server Error
+![500 Internal Server Error](docs/screenshots/error_500.png)
 
 ---
 
 ## GitHub Repository
 
 - **Repository:** https://github.com/Dannyz15/SSD-WEB-APPLICATION
-- **Version:** v1.0.0
+- **Version:** v1.1.0
